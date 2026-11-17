@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
-import type { ReactNode } from 'react'
-import { profile, type Entry } from '../content'
+import { useState, type ReactNode } from 'react'
+import { profile, revealEmail, type Entry } from '../content'
 
 export const rise = {
   initial: { opacity: 0, y: 26 },
@@ -9,7 +9,7 @@ export const rise = {
   transition: { duration: 0.7, ease: [0.2, 0.7, 0.2, 1] },
 } as const
 
-export const mailto = `mailto:${profile.email}`
+export const sendEmail = () => void (window.location.href = `mailto:${revealEmail()}`)
 export const githubUrl = `https://github.com/${profile.github}`
 
 export const btn = {
@@ -52,6 +52,7 @@ export function Timeline({ heading, entries }: { heading: string; entries: Entry
 }
 
 export function Contact({ index }: { index: string }) {
+  const [email, setEmail] = useState<string | null>(null)
   return (
     <section id="contact" className="px-5 pt-16 sm:px-10 sm:pt-24">
       <motion.div {...rise} className="glass rounded-3xl p-7 sm:p-14">
@@ -60,13 +61,21 @@ export function Contact({ index }: { index: string }) {
           Let’s work <em className="text-accent">together</em>.
         </h2>
         <p className="mt-6 max-w-xl text-lg text-paper/75">Open to internships, part-time work and editing or web projects. The fastest way to reach me is email.</p>
-        <a href={mailto} className="mt-8 inline-block break-all text-xl font-medium underline decoration-accent decoration-1 underline-offset-8 transition-colors hover:text-accent sm:text-3xl">
-          {profile.email}
-        </a>
+        <p className="mt-8 min-h-10 text-xl font-medium sm:text-3xl" aria-live="polite">
+          {email ? (
+            <a href={`mailto:${email}`} className="break-all underline decoration-accent decoration-1 underline-offset-8 transition-colors hover:text-accent">
+              {email}
+            </a>
+          ) : (
+            <button type="button" onClick={() => setEmail(revealEmail())} className="cursor-pointer underline decoration-accent decoration-1 underline-offset-8 transition-colors hover:text-accent">
+              Show email address
+            </button>
+          )}
+        </p>
         <div className="mt-10 flex flex-wrap gap-3">
-          <a href={mailto} className={btn.primary}>
+          <button type="button" onClick={sendEmail} className={`${btn.primary} cursor-pointer`}>
             Send an email
-          </a>
+          </button>
           <a href={githubUrl} target="_blank" rel="noreferrer" className={btn.ghost}>
             GitHub ↗
           </a>

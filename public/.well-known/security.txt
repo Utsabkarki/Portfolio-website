@@ -1,4 +1,4 @@
-Contact: mailto:utsabkark4321@gmail.com
+Contact: https://github.com/Utsabkarki/Portfolio-website/issues
 Expires: 2027-11-17T00:00:00.000Z
 Preferred-Languages: en, ja, ne
 Canonical: https://utsabkarki.com.np/.well-known/security.txt

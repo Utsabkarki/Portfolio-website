@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { profile } from '../content'
+import { revealEmail } from '../content'
 import { navigate } from '../router'
-import { githubUrl, mailto } from './ui'
+import { githubUrl, sendEmail } from './ui'
 
 type Command = { label: string; hint: string; run: () => void }
 
@@ -17,8 +17,8 @@ export default function CommandPalette({ open, onClose }: { open: boolean; onClo
       { label: 'Experience', hint: 'Section', run: () => navigate('/#experience') },
       { label: 'Skills', hint: 'Section', run: () => navigate('/#skills') },
       { label: 'Contact', hint: 'Section', run: () => navigate(`${window.location.pathname}#contact`) },
-      { label: 'Copy email address', hint: 'Action', run: () => void navigator.clipboard?.writeText(profile.email) },
-      { label: 'Send an email', hint: 'Action', run: () => void (window.location.href = mailto) },
+      { label: 'Copy email address', hint: 'Action', run: () => void navigator.clipboard?.writeText(revealEmail()) },
+      { label: 'Send an email', hint: 'Action', run: sendEmail },
       { label: 'Open GitHub', hint: 'Link', run: () => void window.open(githubUrl, '_blank', 'noreferrer') },
     ],
     [],

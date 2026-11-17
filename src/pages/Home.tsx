@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import portrait from '../assets/portrait.webp'
-import { btn, Contact, mailto, rise, Section, Timeline } from '../components/ui'
+import { btn, Contact, rise, Section, Timeline } from '../components/ui'
 import { education, experience, profile, skills } from '../content'
 import { Link } from '../router'
 
@@ -24,9 +24,9 @@ export default function Home() {
               <Link href="/about" className={btn.primary}>
                 About me →
               </Link>
-              <a href={mailto} className={btn.ghost}>
+              <Link href="/#contact" className={btn.ghost}>
                 Get in touch
-              </a>
+              </Link>
             </div>
           </div>
         </motion.div>
