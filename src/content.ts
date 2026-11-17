@@ -16,12 +16,6 @@ export const profile = {
   ],
 }
 
-// The address is stored scrambled and only decoded when a visitor asks for it,
-// so scrapers that read the page or its scripts never see it in plain text.
-// To change it: btoa('you@example.com').split('').reverse().join('')
-const scrambled = '=02bj5CbpFWbnBUMyMDNrJXYrJWYzRXd'
-export const revealEmail = () => atob(scrambled.split('').reverse().join(''))
-
 export const facts: { label: string; value: string }[] = [
   { label: 'Based in', value: 'Kyoto, Japan' },
   { label: 'Studying at', value: 'Kyoto Computer Gakuin (KCG)' },

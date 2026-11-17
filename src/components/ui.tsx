@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { profile, revealEmail } from '../content'
+import { profile } from '../content'
 import { Card, Magnetic } from './fx'
 
 export const githubUrl = `https://github.com/${profile.github}`
-export const sendEmail = () => void (window.location.href = `mailto:${revealEmail()}`)
 
 export const btn = {
   primary: 'inline-flex cursor-pointer items-center gap-2 rounded-full bg-paper px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent',
@@ -30,7 +29,6 @@ export function Heading({ index, children }: { index: string; children: React.Re
 }
 
 export function Contact() {
-  const [email, setEmail] = useState<string | null>(null)
   return (
     <section id="contact" className="px-3 pt-20 sm:px-5 sm:pt-28">
       <Card className="px-6 py-16 text-center sm:py-28">
@@ -43,28 +41,14 @@ export function Contact() {
           <h2 className="display mx-auto max-w-4xl text-5xl sm:text-8xl">
             Let’s work <em className="text-accent">together</em>.
           </h2>
-          <p className="mx-auto mt-6 max-w-md text-lg text-paper/60">Part-time work, internships, and editing or web projects. Email is the fastest way to reach me.</p>
+          <p className="mx-auto mt-6 max-w-md text-lg text-paper/60">Part-time work, internships, and editing or web projects. The fastest way to reach me is on GitHub.</p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Magnetic>
-              <button type="button" onClick={sendEmail} className={btn.primary}>
-                Send an email →
-              </button>
-            </Magnetic>
-            <a href={githubUrl} target="_blank" rel="noreferrer" className={btn.ghost}>
-              GitHub ↗
-            </a>
-          </div>
-          <p className="mt-8 min-h-7 text-paper/70" aria-live="polite">
-            {email ? (
-              <a href={`mailto:${email}`} className="break-all underline decoration-accent underline-offset-4 hover:text-accent">
-                {email}
+              <a href={githubUrl} target="_blank" rel="noreferrer" className={btn.primary}>
+                Message me on GitHub ↗
               </a>
-            ) : (
-              <button type="button" onClick={() => setEmail(revealEmail())} className="cursor-pointer underline decoration-white/30 underline-offset-4 hover:text-paper">
-                Show email address
-              </button>
-            )}
-          </p>
+            </Magnetic>
+          </div>
         </div>
       </Card>
     </section>
