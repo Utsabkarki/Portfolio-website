@@ -6,9 +6,9 @@
   --color-paper: #f2efe9;
   --color-mist: #a3a4a8;
   --color-accent: #e8a36a;
-  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
-  --font-mono: 'Geist Mono', ui-monospace, monospace;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
 }
 
 :root {
