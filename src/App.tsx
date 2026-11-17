@@ -2,6 +2,9 @@ import Lenis from 'lenis'
 import { motion } from 'motion/react'
 import { Component, lazy, Suspense, useEffect, type ReactNode } from 'react'
 import { education, experience, profile, skills, type Entry } from './content'
+import fireworks1 from './assets/fireworks-1.webp'
+import fireworks2 from './assets/fireworks-2.webp'
+import portrait from './assets/portrait.webp'
 import { bindInput } from './store'
 
 const Scene = lazy(() => import('./components/Scene'))
@@ -54,7 +57,7 @@ export default function App() {
           Utsab Karki<span className="text-crimson">.</span>
         </a>
         <nav className="flex items-center gap-1 rounded-full border border-line bg-ink/60 p-1 text-sm backdrop-blur-md">
-          {['about', 'experience', 'skills'].map((id) => (
+          {['about', 'experience', 'skills', 'photos'].map((id) => (
             <a key={id} href={`#${id}`} className="hidden rounded-full px-3.5 py-1.5 capitalize text-mist transition-colors hover:text-snow sm:block">
               {id}
             </a>
@@ -96,12 +99,22 @@ export default function App() {
         </section>
 
         <Section id="about" index="01" title="About">
-          <motion.div {...rise}>
-            {profile.about.map((p, i) => (
-              <p key={p} className={i === 0 ? 'mb-6 text-2xl font-semibold leading-snug tracking-tight sm:text-4xl' : 'max-w-2xl text-lg leading-relaxed text-snow/80'}>
-                {p}
-              </p>
-            ))}
+          <motion.div {...rise} className="grid items-start gap-8 md:grid-cols-[minmax(0,17rem)_1fr] md:gap-12">
+            <img
+              src={portrait}
+              alt="Utsab Karki standing on an outdoor ice rink in Japan"
+              width={840}
+              height={1040}
+              loading="lazy"
+              className="aspect-[4/5] w-full max-w-xs rounded-2xl border border-line object-cover"
+            />
+            <div>
+              {profile.about.map((p, i) => (
+                <p key={p} className={i === 0 ? 'mb-6 text-2xl font-semibold leading-snug tracking-tight sm:text-3xl' : 'max-w-2xl text-lg leading-relaxed text-snow/80'}>
+                  {p}
+                </p>
+              ))}
+            </div>
           </motion.div>
         </Section>
 
@@ -129,9 +142,23 @@ export default function App() {
           </motion.div>
         </Section>
 
+        <Section id="photos" index="04" title="Life in Japan">
+          <motion.div {...rise} className="grid grid-cols-2 gap-4 sm:gap-5">
+            {[
+              { src: fireworks1, alt: 'Fireworks bursting over a lake above a summer festival crowd' },
+              { src: fireworks2, alt: 'Fireworks lighting up the night sky over the water' },
+            ].map((ph) => (
+              <figure key={ph.src} className="overflow-hidden rounded-2xl border border-line">
+                <img src={ph.src} alt={ph.alt} width={1050} height={1400} loading="lazy" className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-105" />
+              </figure>
+            ))}
+          </motion.div>
+          <p className="label mt-4">Summer fireworks festival — Japan</p>
+        </Section>
+
         <section id="contact" className="scroll-mt-20 px-5 pb-10 pt-24 sm:px-10 sm:pt-32">
           <motion.div {...rise} className="rounded-3xl border border-line bg-panel/70 p-7 backdrop-blur-md sm:p-14">
-            <p className="label mb-4">04 — Contact</p>
+            <p className="label mb-4">05 — Contact</p>
             <h2 className="text-4xl font-extrabold leading-[0.95] tracking-tight sm:text-7xl">Let’s work together.</h2>
             <p className="mt-5 max-w-xl text-lg text-snow/80">Open to internships, part-time work and editing or web projects. The fastest way to reach me is email.</p>
             <a href={mailto} className="mt-8 inline-block break-all text-xl font-semibold underline decoration-crimson decoration-2 underline-offset-8 transition-colors hover:text-crimson sm:text-3xl">
