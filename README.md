@@ -11,7 +11,7 @@ npm run dev
 
 ## Edit the content
 
-All text, links and the list of hidden repositories live in `src/content.ts`. The Work section loads public repositories live from the GitHub API.
+All text, links, education, experience and skills live in `src/content.ts`.
 
 ## Deploy
 
