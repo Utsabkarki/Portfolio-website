@@ -18,7 +18,7 @@ export const profile = {
 }
 
 // Repositories that should never show up in the Work section.
-export const hiddenRepos = ['Utsabkarki', 'Sajnu']
+export const hiddenRepos = ['Utsabkarki', 'Sajnu', 'Portfolio-website']
 
 export type Project = {
   name: string
@@ -36,7 +36,6 @@ export const fallbackProjects: Project[] = [
   { name: 'anup-karki', description: null, language: 'HTML', url: 'https://github.com/Utsabkarki/anup-karki', homepage: null, pushedAt: '2024-06-01' },
   { name: 'mywebsite', description: null, language: 'HTML', url: 'https://github.com/Utsabkarki/mywebsite', homepage: null, pushedAt: '2024-06-01' },
   { name: 'Nepal', description: null, language: 'HTML', url: 'https://github.com/Utsabkarki/Nepal', homepage: null, pushedAt: '2024-05-30' },
-  { name: 'Portfolio-website', description: null, language: 'HTML', url: 'https://github.com/Utsabkarki/Portfolio-website', homepage: null, pushedAt: '2024-05-30' },
   { name: 'UTSABVAI', description: null, language: 'HTML', url: 'https://github.com/Utsabkarki/UTSABVAI', homepage: null, pushedAt: '2024-05-30' },
   { name: 'QuantumFlareHub', description: null, language: 'HTML', url: 'https://github.com/Utsabkarki/QuantumFlareHub', homepage: null, pushedAt: '2024-02-04' },
 ]
