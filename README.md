@@ -1,6 +1,6 @@
 # utsabkarki.com.np
 
-Personal portfolio of Utsab Karki — a real-time 3D landscape built with React 19, Three.js (React Three Fiber), TypeScript, Vite 8 and Tailwind 4.
+Personal site of Utsab Karki. A real-time 3D mountain landscape (custom shaders) behind a two-page profile, built with React 19, Three.js (React Three Fiber), TypeScript, Vite 8 and Tailwind 4.
 
 ## Develop
 
@@ -11,7 +11,14 @@ npm run dev
 
 ## Edit the content
 
-All text, links, education, experience and skills live in `src/content.ts`.
+All text, links, education, experience and skills live in `src/content.ts`. Photos are in `src/assets`.
+
+## Pages
+
+- `/` — home (`src/pages/Home.tsx`)
+- `/about` — about (`src/pages/About.tsx`)
+
+Navigation is client-side (`src/router.tsx`) and animated with the View Transitions API. Press Ctrl/⌘ + K for the command palette.
 
 ## Deploy
 

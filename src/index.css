@@ -1,15 +1,14 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ink: #07080c;
-  --color-panel: #0e1018;
-  --color-line: #232736;
-  --color-snow: #eef0f6;
-  --color-mist: #9097ab;
-  --color-crimson: #ff3355;
-  --color-azure: #4d7cff;
-  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --color-ink: #0a0b0e;
+  --color-line: rgb(255 255 255 / 0.1);
+  --color-paper: #f2efe9;
+  --color-mist: #a3a4a8;
+  --color-accent: #e8a36a;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 }
 
 :root {
@@ -19,20 +18,19 @@
 
 html {
   background: var(--color-ink);
-  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  color: var(--color-snow);
-  font-family: var(--font-display);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--color-crimson);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-ink);
 }
 
 .scene {
@@ -40,21 +38,77 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: calc(var(--scene-fade) * 0.8);
-  background: radial-gradient(120% 80% at 70% 20%, #151a33 0%, var(--color-ink) 60%);
+  opacity: var(--scene-fade);
+  view-transition-name: scene;
+}
+
+/* Keeps text legible over the landscape. */
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(10 11 14 / 0.88) 0%, rgb(10 11 14 / 0.35) 45%, rgb(10 11 14 / 0.15) 100%);
 }
 
 .label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-mist);
 }
 
+.glass {
+  border: 1px solid var(--color-line);
+  background: rgb(14 15 19 / 0.62);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+/* Reading progress, driven by scroll position with no JavaScript. */
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 40;
+  background: var(--color-accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: scroll()) {
+  .progress {
+    animation: grow linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Page-to-page transitions (View Transitions API). */
+main {
+  view-transition-name: page;
+}
+::view-transition-old(page) {
+  animation: 0.28s ease-in both page-out;
+}
+::view-transition-new(page) {
+  animation: 0.5s 0.12s cubic-bezier(0.2, 0.7, 0.2, 1) both page-in;
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-16px);
+    filter: blur(6px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
   }
 }
