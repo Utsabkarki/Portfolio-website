@@ -25,6 +25,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Forward the domain to the Framer site. Delete these two lines to serve this React site again.
+          REDIRECT_TO: https://ambitious-alpaca-695039.framer.app/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
