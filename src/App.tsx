@@ -1,39 +1,17 @@
 import Lenis from 'lenis'
-import { Component, lazy, Suspense, useEffect, useState, type ReactNode } from 'react'
+import { motion, MotionConfig } from 'motion/react'
+import { useEffect, useState } from 'react'
 import CommandPalette from './components/CommandPalette'
+import { useLocalTime } from './components/ui'
 import { profile } from './content'
 import About from './pages/About'
 import Home from './pages/Home'
 import { Link, usePath } from './router'
 import { bindInput, input, scroller } from './store'
 
-const Scene = lazy(() => import('./components/Scene'))
-
-// If WebGL is unavailable the page simply renders without the 3D backdrop.
-class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false }
-  static getDerivedStateFromError() {
-    return { failed: true }
-  }
-  render() {
-    return this.state.failed ? null : this.props.children
-  }
-}
-
-function useLocalTime() {
-  const format = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: profile.timeZone }).format(new Date())
-  const [time, setTime] = useState(format)
-  useEffect(() => {
-    const id = window.setInterval(() => setTime(format()), 15_000)
-    return () => window.clearInterval(id)
-  }, [])
-  return time
-}
-
 const nav = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
-  { href: '/#experience', label: 'Experience' },
 ]
 
 export default function App() {
@@ -70,44 +48,37 @@ export default function App() {
   }, [])
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <div className="progress" aria-hidden />
-      <div className="scene" aria-hidden>
-        <SceneBoundary>
-          <Suspense fallback={null}>
-            <Scene />
-          </Suspense>
-        </SceneBoundary>
-      </div>
-      <div className="veil" aria-hidden />
 
-      <header className="fixed inset-x-0 top-0 z-30 flex items-center justify-between bg-linear-to-b from-ink/90 via-ink/60 to-transparent px-5 pb-8 pt-4 sm:px-10">
-        <Link href="/" className="font-serif text-2xl leading-none">
-          Utsab Karki<span className="text-accent">.</span>
-        </Link>
-        <nav className="glass flex items-center gap-1 rounded-full p-1 text-sm">
+      <motion.header initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.3, ease: [0.2, 0.7, 0.2, 1] }} className="fixed inset-x-0 top-6 z-40 flex justify-center px-4 sm:top-9">
+        <nav className="glass flex items-center gap-1 rounded-full p-1.5 text-sm shadow-2xl shadow-black/40">
+          <Link href="/" aria-label="Home" className="mr-1 grid size-9 place-items-center rounded-full bg-accent font-serif text-lg italic text-ink">
+            U
+          </Link>
           {nav.map((n) => {
             const current = n.href === path
             return (
-              <Link key={n.href} href={n.href} aria-current={current ? 'page' : undefined} className={`rounded-full px-3.5 py-1.5 transition-colors hover:text-paper ${current ? 'bg-white/10 text-paper' : 'text-mist'} ${n.href.includes('#') ? 'hidden sm:block' : ''}`}>
-                {n.label}
+              <Link key={n.href} href={n.href} aria-current={current ? 'page' : undefined} className={`relative rounded-full px-4 py-2 transition-colors hover:text-paper ${current ? 'text-paper' : 'text-mist'}`}>
+                {current && <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-white/10" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+                <span className="relative">{n.label}</span>
               </Link>
             )
           })}
-          <button type="button" onClick={() => setPalette(true)} aria-label="Open command palette" className="hidden rounded-full px-3 py-1.5 font-mono text-xs text-mist transition-colors hover:text-paper sm:block">
+          <button type="button" onClick={() => setPalette(true)} aria-label="Open command palette" className="hidden cursor-pointer rounded-full px-3 py-2 font-mono text-xs text-mist transition-colors hover:text-paper sm:block">
             ⌘K
           </button>
-          <Link href={`${path}#contact`} className="rounded-full bg-paper px-3.5 py-1.5 font-semibold text-ink">
+          <Link href={`${path}#contact`} className="rounded-full bg-paper px-4 py-2 font-semibold text-ink transition-colors hover:bg-accent">
             Contact
           </Link>
         </nav>
-      </header>
+      </motion.header>
 
-      <main key={path} className="relative z-10 mx-auto max-w-7xl">
+      <main key={path} className="mx-auto max-w-[100rem]">
         {isAbout ? <About /> : <Home />}
       </main>
 
-      <footer className="label relative z-10 mx-auto mt-16 flex max-w-7xl flex-wrap justify-between gap-3 border-t border-line px-5 py-6 sm:px-10">
+      <footer className="label mx-auto flex max-w-[100rem] flex-wrap justify-between gap-3 px-5 py-8 sm:px-10">
         <span>
           © {new Date().getFullYear()} {profile.name}
         </span>
@@ -120,6 +91,6 @@ export default function App() {
       </footer>
 
       <CommandPalette open={palette} onClose={() => setPalette(false)} />
-    </>
+    </MotionConfig>
   )
 }

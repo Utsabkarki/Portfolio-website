@@ -12,7 +12,6 @@ export const scroller: { to: (target: number | HTMLElement, immediate?: boolean)
 export function bindInput() {
   const onScroll = () => {
     input.scroll = window.scrollY / Math.max(1, window.innerHeight)
-    document.documentElement.style.setProperty('--scene-fade', String(Math.max(0.2, 1 - input.scroll * 0.9)))
   }
   const onMove = (e: PointerEvent) => {
     input.px = (e.clientX / window.innerWidth) * 2 - 1

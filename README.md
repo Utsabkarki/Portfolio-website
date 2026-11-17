@@ -18,7 +18,7 @@ All text, links, education, experience and skills live in `src/content.ts`. Phot
 - `/` — home (`src/pages/Home.tsx`)
 - `/about` — about (`src/pages/About.tsx`)
 
-Navigation is client-side (`src/router.tsx`) and animated with the View Transitions API. Press Ctrl/⌘ + K for the command palette.
+Navigation is client-side (`src/router.tsx`) and animated with the View Transitions API. Motion effects (`src/components/fx.tsx`) use Motion, the library formerly known as Framer Motion. Press Ctrl/⌘ + K for the command palette.
 
 ## Deploy
 

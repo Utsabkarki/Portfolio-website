@@ -184,10 +184,15 @@ function Rig() {
   return null
 }
 
-export default function Scene() {
+export default function Scene({ active }: { active: boolean }) {
   const still = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
   return (
-    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 2.4, 9], fov: 48, near: 0.1, far: 200 }} gl={{ antialias: true, powerPreference: 'high-performance' }}>
+    <Canvas
+      frameloop={still ? 'demand' : active ? 'always' : 'never'}
+      dpr={[1, 1.5]}
+      camera={{ position: [0, 2.4, 9], fov: 48, near: 0.1, far: 200 }}
+      gl={{ antialias: true, powerPreference: 'high-performance' }}
+    >
       <Rig />
       <Landscape still={still} />
     </Canvas>
