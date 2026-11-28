@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { Component, lazy, Suspense, useEffect, type ReactNode } from 'react'
+import Characters from './components/Characters'
 import { profile } from './content'
 import { bindInput } from './store'
 
@@ -43,6 +44,7 @@ export function Layout({ page, children }: { page: Page; children: ReactNode }) 
           </Suspense>
         </SceneBoundary>
       </div>
+      <Characters />
       <div className="canvas-grid" aria-hidden />
 
       <header className="fixed inset-x-0 top-0 z-30">
