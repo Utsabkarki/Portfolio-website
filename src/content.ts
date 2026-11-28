@@ -35,5 +35,5 @@ export const contact = {
   // without the address ever appearing on the site. Get a free access key at
   // https://web3forms.com (enter your Gmail, the key arrives by email) and
   // paste it here. Until then the form shows a "coming soon" note.
-  web3formsKey: '',
+  web3formsKey: '399a5bec-e8de-401c-800d-d8e7ff745236',
 }
