@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Rebuild every 3 hours so the world headlines stay fresh and
+  # future-dated blog posts go live on their day.
+  schedule:
+    - cron: '23 */3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -24,6 +28,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node scripts/fetch-news.mjs
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

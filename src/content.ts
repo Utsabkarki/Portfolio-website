@@ -6,37 +6,34 @@ export const profile = {
   location: 'Kyoto, Japan',
   github: 'Utsabkarki',
   domain: 'utsabkarki.com.np',
-  tagline:
-    'Computer science student in Japan, building modern web experiences with an editor’s eye for detail.',
-  about: [
-    'I’m a student at Kyoto Computer Gakuin (KCG) in Japan, where I study computing and software development.',
-    'Alongside my studies I build for the web and work in editing. Both come down to the same discipline: take something rough, cut what doesn’t belong, and deliver a clean, finished result on time.',
+  tagline: 'From Lumbini, Nepal to Kyoto, Japan — studying, building for the web and editing.',
+}
+
+// The "Past" branch of the sketch.
+export const past = {
+  intro:
+    'Hi, I’m Utsab. I was born and raised in Nepal, in the Lumbini region — the birthplace of the Buddha.',
+  born: { place: 'Lumbini, Nepal', note: 'Born & raised' },
+  education: [
+    { title: 'Cleared +2', place: 'Higher Secondary Education — Nepal', detail: 'Completed my +2 in Nepal before moving abroad to study.' },
   ],
 }
 
-export type Entry = { title: string; place: string; period: string; detail: string }
+// The "Now" branch of the sketch, top to bottom.
+export const now = {
+  timeline: [
+    { when: 'Oct 2024', title: 'Came to Japan', detail: 'Moved from Nepal to Japan to continue my studies.' },
+    { when: 'Done', title: 'Cleared Japanese language', detail: 'Completed my Japanese language studies.' },
+    { when: 'Now', title: 'Studying at KCG', detail: 'Kyoto Computer Gakuin — computing and software development.' },
+  ],
+  skills: ['Python', 'HTML', 'CSS'],
+  work: [{ title: 'Editing', detail: 'Hands-on editing work: shaping raw footage and material into polished, finished pieces.' }],
+}
 
-export const education: Entry[] = [
-  {
-    title: 'Student, Computer Science',
-    place: 'Kyoto Computer Gakuin (KCG) — Japan',
-    period: 'Present',
-    detail: 'Studying computing fundamentals, programming and web technologies.',
-  },
-]
-
-export const experience: Entry[] = [
-  {
-    title: 'Editor',
-    place: 'Editing',
-    period: '',
-    detail:
-      'Hands-on editing experience: shaping raw material into polished, finished work with attention to pacing, consistency and deadlines.',
-  },
-]
-
-export const skills: { group: string; items: string[] }[] = [
-  { group: 'Development', items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Python'] },
-  { group: 'Creative', items: ['Editing', '3D for the web', 'UI design'] },
-  { group: 'Languages', items: ['Nepali', 'English', 'Japanese'] },
-]
+export const contact = {
+  // Messages from the contact form are delivered to your Gmail by Web3Forms
+  // without the address ever appearing on the site. Get a free access key at
+  // https://web3forms.com (enter your Gmail, the key arrives by email) and
+  // paste it here. Until then the form shows a "coming soon" note.
+  web3formsKey: '',
+}

@@ -84,9 +84,9 @@ function Terrain({ still }: { still: boolean }) {
         uniforms: {
           uTime: { value: 0 },
           uWire: { value: isWire ? 1 : 0 },
-          uBg: { value: new THREE.Color('#0a0710') },
-          uLow: { value: new THREE.Color('#7b2fe0') },
-          uHigh: { value: new THREE.Color('#ff7518') },
+          uBg: { value: new THREE.Color('#07110e') },
+          uLow: { value: new THREE.Color('#2e8f5e') },
+          uHigh: { value: new THREE.Color('#dfeee6') },
         },
       })
     return [make(false), make(true)]
@@ -94,7 +94,7 @@ function Terrain({ still }: { still: boolean }) {
 
   useFrame((_, dt) => {
     if (still) return
-    const t = fill.uniforms.uTime.value + Math.min(dt, 0.05) * 1.1
+    const t = fill.uniforms.uTime.value + Math.min(dt, 0.05) * 0.6
     fill.uniforms.uTime.value = t
     wire.uniforms.uTime.value = t
   })
@@ -113,94 +113,99 @@ function glowTexture() {
   c.width = c.height = 128
   const g = c.getContext('2d')!
   const grad = g.createRadialGradient(64, 64, 0, 64, 64, 64)
-  grad.addColorStop(0, 'rgba(255,190,120,0.9)')
-  grad.addColorStop(0.35, 'rgba(255,120,40,0.35)')
-  grad.addColorStop(1, 'rgba(255,90,20,0)')
+  grad.addColorStop(0, 'rgba(255,246,220,0.85)')
+  grad.addColorStop(0.35, 'rgba(242,193,78,0.25)')
+  grad.addColorStop(1, 'rgba(242,193,78,0)')
   g.fillStyle = grad
   g.fillRect(0, 0, 128, 128)
   return new THREE.CanvasTexture(c)
 }
 
-function batShape() {
-  const s = new THREE.Shape()
-  s.moveTo(0, 0.12)
-  s.quadraticCurveTo(0.18, 0.3, 0.42, 0.22)
-  s.quadraticCurveTo(0.7, 0.16, 1, 0.32)
-  s.quadraticCurveTo(0.86, 0.06, 0.92, -0.14)
-  s.quadraticCurveTo(0.74, -0.04, 0.6, -0.16)
-  s.quadraticCurveTo(0.48, -0.02, 0.34, -0.18)
-  s.quadraticCurveTo(0.2, -0.04, 0.08, -0.12)
-  s.lineTo(0, -0.2)
-  s.lineTo(-0.08, -0.12)
-  s.quadraticCurveTo(-0.2, -0.04, -0.34, -0.18)
-  s.quadraticCurveTo(-0.48, -0.02, -0.6, -0.16)
-  s.quadraticCurveTo(-0.74, -0.04, -0.92, -0.14)
-  s.quadraticCurveTo(-0.86, 0.06, -1, 0.32)
-  s.quadraticCurveTo(-0.7, 0.16, -0.42, 0.22)
-  s.quadraticCurveTo(-0.18, 0.3, 0, 0.12)
-  return new THREE.ShapeGeometry(s)
-}
-
+// A pale winter moon.
 function Moon({ still }: { still: boolean }) {
   const group = useRef<THREE.Group>(null!)
   const aspect = useThree((s) => s.viewport.aspect)
-  const narrow = aspect < 1
   const glow = useMemo(() => glowTexture(), [])
-  const moonMat = useMemo(
+  useFrame(({ clock }) => {
+    const narrow = aspect < 1
+    group.current.position.set(narrow ? 2.2 : 7.5, narrow ? 9 : 7.6, -24)
+    if (!still) group.current.position.y += Math.sin(clock.elapsedTime * 0.3) * 0.15
+  })
+  return (
+    <group ref={group}>
+      <sprite scale={[9, 9, 1]}>
+        <spriteMaterial map={glow} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+      </sprite>
+      <mesh>
+        <sphereGeometry args={[1.3, 48, 48]} />
+        <meshBasicMaterial color="#fff6dc" />
+      </mesh>
+    </group>
+  )
+}
+
+// GPU snowfall: each flake falls and sways in the vertex shader, wrapping around.
+const snowVertex = /* glsl */ `
+uniform float uTime;
+uniform float uPixel;
+attribute float aSeed;
+varying float vAlpha;
+void main(){
+  vec3 p = position;
+  float speed = 0.6 + aSeed * 0.9;
+  p.y = mod(p.y - uTime * speed, 22.0) - 4.0;
+  p.x += sin(uTime * (0.4 + aSeed) + aSeed * 40.0) * 0.6;
+  p.z += cos(uTime * 0.3 + aSeed * 17.0) * 0.4;
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_PointSize = uPixel * (0.6 + aSeed * 1.4) * (14.0 / -mv.z);
+  vAlpha = smoothstep(46.0, 4.0, -mv.z) * (0.45 + aSeed * 0.55);
+  gl_Position = projectionMatrix * mv;
+}`
+
+const snowFragment = /* glsl */ `
+varying float vAlpha;
+void main(){
+  float d = length(gl_PointCoord - 0.5);
+  float a = smoothstep(0.5, 0.1, d) * vAlpha;
+  gl_FragColor = vec4(vec3(1.0, 0.99, 0.96), a);
+}`
+
+function Snow({ still }: { still: boolean }) {
+  const count = 2600
+  const dpr = useThree((s) => s.viewport.dpr)
+  const [positions, seeds] = useMemo(() => {
+    const p = new Float32Array(count * 3)
+    const s = new Float32Array(count)
+    for (let i = 0; i < count; i++) {
+      p[i * 3] = (Math.random() - 0.5) * 44
+      p[i * 3 + 1] = Math.random() * 22
+      p[i * 3 + 2] = -Math.random() * 40 + 6
+      s[i] = Math.random()
+    }
+    return [p, s]
+  }, [])
+  const material = useMemo(
     () =>
       new THREE.ShaderMaterial({
-        uniforms: {},
-        vertexShader: /* glsl */ `varying vec3 vN; varying vec3 vP; void main(){ vN = normalize(normalMatrix * normal); vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
-        fragmentShader: /* glsl */ `varying vec3 vN; varying vec3 vP;
-          float h(vec3 p){ return fract(sin(dot(p, vec3(12.9898,78.233,45.164))) * 43758.5453); }
-          float n(vec3 p){ vec3 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);
-            return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x),mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x),f.y),
-                       mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x),mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x),f.y),f.z); }
-          void main(){
-            float craters = n(vP*2.2)*0.6 + n(vP*5.0)*0.3 + n(vP*11.0)*0.1;
-            vec3 base = mix(vec3(1.0,0.55,0.2), vec3(1.0,0.86,0.6), smoothstep(0.35,0.7,craters));
-            float rim = pow(1.0 - max(dot(vN, vec3(0,0,1)), 0.0), 2.0);
-            gl_FragColor = vec4(base * (0.85 + 0.25*rim), 1.0);
-            #include <colorspace_fragment>
-          }`,
+        vertexShader: snowVertex,
+        fragmentShader: snowFragment,
+        transparent: true,
+        depthWrite: false,
+        uniforms: { uTime: { value: 0 }, uPixel: { value: 1 } },
       }),
     [],
   )
-  const bats = useRef<THREE.Group>(null!)
-  const batGeo = useMemo(() => batShape(), [])
-  const batData = useMemo(() => Array.from({ length: 7 }, (_, i) => ({ r: 2.2 + (i % 3) * 0.9, speed: 0.25 + (i % 4) * 0.07, phase: (i / 7) * Math.PI * 2, y: (i % 2 ? 0.6 : -0.4) + (i % 3) * 0.3, size: 0.32 + (i % 3) * 0.1 })), [])
-
-  useFrame((state) => {
-    const t = state.clock.elapsedTime
-    const s = input.scroll
-    group.current.position.set(narrow ? 0.4 : 3.3, (narrow ? 5.6 : 4.0) + s * 1.6, -4)
-    group.current.scale.setScalar((narrow ? 0.7 : 1) * (1 + Math.min(s, 2) * 0.1))
-    if (still) return
-    bats.current.children.forEach((bat, i) => {
-      const d = batData[i]
-      const a = t * d.speed + d.phase
-      bat.position.set(Math.cos(a) * d.r, d.y + Math.sin(t * 1.3 + i) * 0.2, Math.sin(a) * d.r * 0.5 + 0.8)
-      bat.rotation.z = Math.sin(a) * 0.2
-      bat.scale.set(d.size, d.size * (0.7 + 0.3 * Math.abs(Math.sin(t * 8 + i))), d.size)
-    })
+  useFrame((_, dt) => {
+    material.uniforms.uPixel.value = dpr
+    if (!still) material.uniforms.uTime.value += Math.min(dt, 0.05)
   })
-
   return (
-    <group ref={group}>
-      <sprite scale={[7, 7, 1]}>
-        <spriteMaterial map={glow} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
-      </sprite>
-      <mesh material={moonMat}>
-        <sphereGeometry args={[1.25, 64, 64]} />
-      </mesh>
-      <group ref={bats}>
-        {batData.map((d, i) => (
-          <mesh key={i} geometry={batGeo} position={[Math.cos(d.phase) * d.r, d.y, 0.8]} scale={d.size}>
-            <meshBasicMaterial color="#050308" side={THREE.DoubleSide} />
-          </mesh>
-        ))}
-      </group>
-    </group>
+    <points material={material}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-aSeed" args={[seeds, 1]} />
+      </bufferGeometry>
+    </points>
   )
 }
 
@@ -226,7 +231,7 @@ function Stars({ still }: { still: boolean }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial color="#ffd8b0" size={0.14} sizeAttenuation transparent opacity={0.8} depthWrite={false} />
+      <pointsMaterial color="#fff1cf" size={0.14} sizeAttenuation transparent opacity={0.8} depthWrite={false} />
     </points>
   )
 }
@@ -256,6 +261,7 @@ export default function Scene() {
       <Terrain still={still} />
       <Moon still={still} />
       <Stars still={still} />
+      <Snow still={still} />
     </Canvas>
   )
 }

@@ -1,17 +1,20 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ink: #0a0710;
-  --color-panel: #150e1d;
-  --color-line: #2f2240;
-  --color-snow: #f4ece0;
-  --color-mist: #a596b4;
-  --color-crimson: #ff7518;
-  --color-azure: #b483ff;
-  --color-slime: #9dff6b;
+  --color-ink: #07110e;
+  --color-panel: #0e1c18;
+  --color-panel-2: #132620;
+  --color-line: #21382f;
+  --color-snow: #f7f3ea;
+  --color-mist: #9fb3aa;
+  --color-berry: #e5383b;
+  --color-gold: #f2c14e;
+  --color-pine: #3fa36b;
+  --color-figma: #4c9dff;
   --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
-  --font-spooky: 'Creepster', 'Bricolage Grotesque Variable', cursive;
+  --font-festive: 'Mountains of Christmas', 'Bricolage Grotesque Variable', cursive;
+  --font-jp: 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', 'Noto Sans CJK JP', sans-serif;
 }
 
 :root {
@@ -33,39 +36,27 @@ body {
 }
 
 ::selection {
-  background: var(--color-crimson);
-  color: var(--color-ink);
+  background: var(--color-berry);
+  color: var(--color-snow);
 }
 
-.spooky {
-  font-family: var(--font-spooky);
-  font-weight: 400;
-  letter-spacing: 0.02em;
+:focus-visible {
+  outline: 2px solid var(--color-figma);
+  outline-offset: 3px;
 }
 
-/* Pumpkin glow on the accent headline */
+.festive {
+  font-family: var(--font-festive);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.jp {
+  font-family: var(--font-jp);
+}
+
 .glow {
-  text-shadow: 0 0 24px rgb(255 117 24 / 0.55), 0 0 64px rgb(255 117 24 / 0.25);
-}
-
-/* Cobweb in the top corner */
-.web {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 1;
-  width: min(42vw, 360px);
-  pointer-events: none;
-  opacity: 0.22;
-}
-
-.scene {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: calc(var(--scene-fade) * 0.8);
-  background: radial-gradient(120% 80% at 70% 15%, #2a1240 0%, #12091c 40%, var(--color-ink) 70%);
+  text-shadow: 0 0 24px rgb(242 193 78 / 0.45), 0 0 64px rgb(229 56 59 / 0.25);
 }
 
 .label {
@@ -76,9 +67,190 @@ body {
   color: var(--color-mist);
 }
 
+/* 3D snow backdrop */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: calc(var(--scene-fade) * 0.9);
+  background: radial-gradient(120% 80% at 70% 10%, #123129 0%, #0a1a16 42%, var(--color-ink) 72%);
+}
+
+/* Figma-style canvas dot grid */
+.canvas-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: radial-gradient(rgb(247 243 234 / 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, transparent, black 30%, black);
+}
+
+/* A design-tool "frame": name tag above, selection handles on hover */
+.frame {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  background: color-mix(in oklab, var(--color-panel) 78%, transparent);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.frame:hover {
+  border-color: var(--color-figma);
+  box-shadow: 0 0 0 1px var(--color-figma);
+}
+.frame-tag {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-mist);
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+.frame:hover .frame-tag {
+  color: var(--color-figma);
+}
+.frame::before,
+.frame::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-snow);
+  border: 1.5px solid var(--color-figma);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.frame::before {
+  top: -5px;
+  left: -5px;
+}
+.frame::after {
+  bottom: -5px;
+  right: -5px;
+}
+.frame:hover::before,
+.frame:hover::after {
+  opacity: 1;
+}
+
+/* Candy-cane rule */
+.candy {
+  height: 6px;
+  border-radius: 99px;
+  background: repeating-linear-gradient(-45deg, var(--color-berry) 0 8px, var(--color-snow) 8px 16px);
+  opacity: 0.85;
+}
+
+/* Twinkling string lights */
+.lights {
+  display: flex;
+  justify-content: space-between;
+  gap: 0;
+}
+.lights span {
+  width: 8px;
+  height: 12px;
+  border-radius: 50% 50% 45% 45%;
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+.lights span:nth-child(4n + 1) { background: var(--color-berry); box-shadow: 0 0 10px var(--color-berry); }
+.lights span:nth-child(4n + 2) { background: var(--color-gold); box-shadow: 0 0 10px var(--color-gold); animation-delay: 0.6s; }
+.lights span:nth-child(4n + 3) { background: var(--color-pine); box-shadow: 0 0 10px var(--color-pine); animation-delay: 1.2s; }
+.lights span:nth-child(4n + 4) { background: var(--color-figma); box-shadow: 0 0 10px var(--color-figma); animation-delay: 1.8s; }
+@keyframes twinkle {
+  50% { opacity: 0.25; box-shadow: none; }
+}
+
+/* 3D photo carousel */
+.carousel {
+  perspective: 1100px;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.carousel:active {
+  cursor: grabbing;
+}
+.ring {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.ring figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgb(247 243 234 / 0.18);
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.7);
+}
+
+/* Nepal map pin pulse */
+.pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 2.2s ease-out infinite;
+}
+@keyframes pulse {
+  from { transform: scale(0.6); opacity: 0.9; }
+  to { transform: scale(2.6); opacity: 0; }
+}
+.draw {
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+  animation: draw 3.2s ease forwards;
+}
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Flip cards for Japanese words */
+.flip {
+  perspective: 900px;
+}
+.flip-inner {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.flip[data-flipped='true'] .flip-inner {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+/* Blog article typography */
+.prose-post h2 { font-size: 1.4rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+.prose-post h3 { font-size: 1.15rem; font-weight: 700; margin: 1.5rem 0 0.5rem; }
+.prose-post p { margin: 0 0 1rem; line-height: 1.75; color: rgb(247 243 234 / 0.85); }
+.prose-post ul, .prose-post ol { margin: 0 0 1rem 1.25rem; line-height: 1.75; color: rgb(247 243 234 / 0.85); }
+.prose-post ul { list-style: disc; }
+.prose-post ol { list-style: decimal; }
+.prose-post a { color: var(--color-gold); text-decoration: underline; text-underline-offset: 3px; }
+.prose-post strong { color: var(--color-snow); }
+.prose-post blockquote { border-left: 3px solid var(--color-berry); padding-left: 1rem; color: var(--color-mist); margin: 0 0 1rem; }
+.prose-post code { font-family: var(--font-mono); font-size: 0.9em; background: var(--color-panel-2); padding: 0.1em 0.35em; border-radius: 0.3em; }
+
+dialog::backdrop {
+  background: rgb(3 8 6 / 0.75);
+  backdrop-filter: blur(6px);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
+  .lights span, .pulse, .draw { animation: none; stroke-dashoffset: 0; }
+  .flip-inner { transition: none; }
 }

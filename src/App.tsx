@@ -1,10 +1,15 @@
-import Lenis from 'lenis'
 import { motion } from 'motion/react'
 import { Component, lazy, Suspense, useEffect, type ReactNode } from 'react'
-import { education, experience, profile, skills, type Entry } from './content'
 import fireworks1 from './assets/fireworks-1.webp'
 import fireworks2 from './assets/fireworks-2.webp'
 import portrait from './assets/portrait.webp'
+import Blog from './components/Blog'
+import Contact from './components/Contact'
+import JapaneseWords from './components/JapaneseWords'
+import NepalMap from './components/NepalMap'
+import News from './components/News'
+import Photo3D from './components/Photo3D'
+import { now, past, profile } from './content'
 import { bindInput } from './store'
 
 const Scene = lazy(() => import('./components/Scene'))
@@ -23,23 +28,30 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
 const rise = {
   initial: { opacity: 0, y: 30 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
+  viewport: { once: true, margin: '-60px' },
   transition: { duration: 0.7, ease: [0.2, 0.7, 0.2, 1] },
 } as const
 
 const githubUrl = `https://github.com/${profile.github}`
-const [first, ...rest] = profile.name.split(' ')
+
+const photos = [
+  { src: portrait, alt: 'Utsab Karki standing on an outdoor ice rink in Japan' },
+  { src: fireworks1, alt: 'Fireworks bursting over a lake above a summer festival crowd in Japan' },
+  { src: fireworks2, alt: 'Fireworks lighting up the night sky over the water in Japan' },
+]
+
+function daysToChristmas() {
+  const jst = new Date(Date.now() + 9 * 3_600_000)
+  const y = jst.getUTCFullYear()
+  const today = Date.UTC(y, jst.getUTCMonth(), jst.getUTCDate())
+  let xmas = Date.UTC(y, 11, 25)
+  if (today > xmas) xmas = Date.UTC(y + 1, 11, 25)
+  return Math.round((xmas - today) / 86_400_000)
+}
 
 export default function App() {
-  useEffect(() => {
-    const unbind = bindInput()
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return unbind
-    const lenis = new Lenis({ autoRaf: true, anchors: true })
-    return () => {
-      lenis.destroy()
-      unbind()
-    }
-  }, [])
+  useEffect(() => bindInput(), [])
+  const xmas = daysToChristmas()
 
   return (
     <>
@@ -50,133 +62,175 @@ export default function App() {
           </Suspense>
         </SceneBoundary>
       </div>
+      <div className="canvas-grid" aria-hidden />
 
-      <svg className="web" viewBox="0 0 200 200" fill="none" stroke="#f4ece0" strokeWidth="0.8" aria-hidden>
-        <path d="M200 0 L60 0 M200 0 L80 60 M200 0 L120 110 M200 0 L170 150 M200 0 L200 160" />
-        <path d="M180 0 Q184 10 200 14 M150 0 Q160 22 190 34 Q196 36 200 40 M120 0 Q132 34 172 62 Q190 72 200 76 M90 0 Q104 46 152 92 Q180 112 200 118 M66 0 Q78 58 132 120 Q166 150 200 156" />
-      </svg>
-      <header className="fixed inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4 sm:px-10">
-        <a href="#top" className="text-sm font-semibold tracking-tight">
-          Utsab Karki<span className="text-crimson"> 🎃</span>
-        </a>
-        <nav className="flex items-center gap-1 rounded-full border border-line bg-ink/60 p-1 text-sm backdrop-blur-md">
-          {['about', 'experience', 'skills', 'photos'].map((id) => (
-            <a key={id} href={`#${id}`} className="hidden rounded-full px-3.5 py-1.5 capitalize text-mist transition-colors hover:text-snow sm:block">
-              {id}
-            </a>
+      <header className="fixed inset-x-0 top-0 z-30">
+        <div className="lights px-2" aria-hidden>
+          {Array.from({ length: 28 }, (_, i) => (
+            <span key={i} />
           ))}
-          <a href="#contact" className="rounded-full bg-snow px-3.5 py-1.5 font-semibold text-ink">
-            Contact
+        </div>
+        <div className="flex items-center justify-between px-5 py-3 sm:px-10">
+          <a href="#top" className="text-sm font-semibold tracking-tight">
+            Utsab Karki <span aria-hidden>🎄</span>
           </a>
-        </nav>
+          <nav className="flex items-center gap-1 rounded-full border border-line bg-ink/70 p-1 text-sm backdrop-blur-md">
+            {[
+              ['story', 'Story'],
+              ['blog', 'Blog'],
+              ['japanese', '日本語'],
+            ].map(([id, name]) => (
+              <a key={id} href={`#${id}`} className="hidden rounded-full px-3.5 py-1.5 text-mist transition-colors hover:text-snow sm:block">
+                {name}
+              </a>
+            ))}
+            <a href="#contact" className="rounded-full bg-snow px-3.5 py-1.5 font-semibold text-ink">
+              Contact
+            </a>
+          </nav>
+        </div>
       </header>
 
-      <main id="top" className="relative z-10 mx-auto max-w-7xl">
-        <section className="flex min-h-svh flex-col justify-end px-5 pb-10 pt-28 sm:px-10 sm:pb-14">
+      <main id="top" className="relative z-10 mx-auto max-w-7xl px-5 sm:px-10">
+        {/* ── Title node ─────────────────────────────── */}
+        <section className="flex min-h-[88svh] flex-col items-center justify-center pb-10 pt-32 text-center">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.2, 0.7, 0.2, 1] }}>
-            <p className="label mb-5 flex items-center gap-3">
-              <span className="inline-block size-2 rounded-full bg-slime shadow-[0_0_10px_var(--color-slime)]" />
-              {profile.role}
+            <p className="label mx-auto mb-10 flex w-fit items-center gap-2 rounded-full border border-line bg-panel/70 px-4 py-2 backdrop-blur-md">
+              <span className="inline-block size-2 rounded-full bg-pine shadow-[0_0_10px_var(--color-pine)]" />
+              {xmas === 0 ? 'Merry Christmas! 🎅' : `${xmas} day${xmas === 1 ? '' : 's'} until Christmas`}
             </p>
-            <h1 className="text-[clamp(3.4rem,12vw,10rem)] font-extrabold leading-[0.88] tracking-[-0.04em]">
-              {first}
-              <br />
-              <span className="spooky glow text-crimson">{rest.join(' ')}</span>
-            </h1>
-            <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-              <p className="max-w-lg text-lg leading-snug text-snow/85 sm:text-xl">{profile.tagline}</p>
-              <div className="flex flex-wrap items-center gap-3">
-                <a href="#contact" className="rounded-full bg-crimson px-5 py-3 font-semibold text-ink shadow-[0_0_30px_rgb(255_117_24/0.45)] transition-transform hover:-translate-y-0.5">
-                  Get in touch
-                </a>
-                <a href="#about" className="rounded-full border border-snow/30 bg-ink/40 px-5 py-3 font-semibold backdrop-blur-md transition-colors hover:border-snow">
-                  About me ↓
-                </a>
-              </div>
+            <div className="frame mx-auto inline-block px-6 py-4 sm:px-10 sm:py-6">
+              <span className="frame-tag">Frame · My Portfolio</span>
+              <h1 className="text-[clamp(3rem,11vw,8.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
+                My <span className="festive glow text-gold">Portfolio</span>
+              </h1>
             </div>
-            <div className="label mt-10 flex justify-between border-t border-snow/15 pt-4">
-              <span>{profile.location}</span>
-              <span>Scroll</span>
-            </div>
+            <p className="mx-auto mt-8 max-w-xl text-lg leading-snug text-snow/85 sm:text-xl">
+              <strong className="text-snow">{profile.name}</strong> — {profile.tagline}
+            </p>
+            <a href="#story" className="mt-8 inline-flex items-center gap-2 rounded-full bg-berry px-6 py-3 font-semibold shadow-[0_0_30px_rgb(229_56_59/0.45)] transition-transform hover:-translate-y-0.5">
+              Read my story ↓
+            </a>
           </motion.div>
         </section>
 
-        <Section id="about" index="01" title="About">
-          <motion.div {...rise} className="grid items-start gap-8 md:grid-cols-[minmax(0,17rem)_1fr] md:gap-12">
-            <img
-              src={portrait}
-              alt="Utsab Karki standing on an outdoor ice rink in Japan"
-              width={840}
-              height={1040}
-              loading="lazy"
-              className="aspect-[4/5] w-full max-w-xs rounded-2xl border border-line object-cover"
-            />
-            <div>
-              {profile.about.map((p, i) => (
-                <p key={p} className={i === 0 ? 'mb-6 text-2xl font-semibold leading-snug tracking-tight sm:text-3xl' : 'max-w-2xl text-lg leading-relaxed text-snow/80'}>
-                  {p}
-                </p>
-              ))}
+        {/* ── Branches: Past · Photo · Now ───────────── */}
+        <section id="story" className="scroll-mt-24 pb-24">
+          <Branches />
+          <div className="mt-4 grid gap-12 lg:grid-cols-3 lg:gap-8">
+            {/* PAST */}
+            <div className="space-y-12">
+              <BranchTitle kicker="Past" title="Introduction" />
+              <Node tag="Utsab Karki">
+                <p className="text-xl font-semibold leading-snug">{past.intro}</p>
+              </Node>
+              <Arrow />
+              <Node tag="Born · Nepal">
+                <p className="label mb-3">{past.born.note}</p>
+                <h3 className="mb-4 text-2xl font-bold">{past.born.place}</h3>
+                <NepalMap />
+              </Node>
+              <Arrow />
+              <Node tag="Education">
+                {past.education.map((e) => (
+                  <div key={e.title} className="border-l-2 border-gold pl-4">
+                    <h3 className="text-xl font-bold">{e.title}</h3>
+                    <p className="text-gold">{e.place}</p>
+                    <p className="mt-2 text-snow/75">{e.detail}</p>
+                  </div>
+                ))}
+              </Node>
             </div>
-          </motion.div>
-        </Section>
 
-        <Section id="experience" index="02" title="Education & Experience">
-          <div className="grid gap-5 md:grid-cols-2">
-            <Timeline heading="Education" entries={education} />
-            <Timeline heading="Work experience" entries={experience} />
-          </div>
-        </Section>
+            {/* PHOTO */}
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <BranchTitle kicker="Photo" title="In 3D" />
+              <motion.div {...rise} className="mt-12">
+                <Photo3D photos={photos} />
+              </motion.div>
+            </div>
 
-        <Section id="skills" index="03" title="Skills">
-          <motion.div {...rise} className="divide-y divide-line border-y border-line">
-            {skills.map((s) => (
-              <div key={s.group} className="grid gap-3 py-6 sm:grid-cols-[12rem_1fr] sm:items-center">
-                <h3 className="font-semibold">{s.group}</h3>
+            {/* NOW */}
+            <div className="space-y-12">
+              <BranchTitle kicker="Now" title="Life in Japan" />
+              {now.timeline.map((t, i) => (
+                <div key={t.title} className="space-y-12">
+                  {i > 0 && <Arrow />}
+                  <Node tag={t.when}>
+                    <p className="label text-gold">{t.when}</p>
+                    <h3 className="mt-1 text-xl font-bold">{t.title}</h3>
+                    <p className="mt-1.5 text-snow/75">{t.detail}</p>
+                  </Node>
+                </div>
+              ))}
+              <Arrow />
+              <Node tag="Skills">
+                <h3 className="mb-4 text-xl font-bold">Skills</h3>
                 <ul className="flex flex-wrap gap-2">
-                  {s.items.map((item) => (
-                    <li key={item} className="rounded-full border border-line bg-panel/70 px-3.5 py-1.5 text-sm text-snow/85 backdrop-blur-md">
-                      {item}
+                  {now.skills.map((s) => (
+                    <li key={s} className="rounded-full border border-line bg-panel-2 px-4 py-2 font-mono text-sm">
+                      {s}
                     </li>
                   ))}
                 </ul>
+              </Node>
+              <Arrow />
+              <Node tag="Working experience">
+                <p className="label mb-2">Working experience</p>
+                {now.work.map((w) => (
+                  <div key={w.title}>
+                    <h3 className="text-xl font-bold">{w.title} ✂️</h3>
+                    <p className="mt-1.5 text-snow/75">{w.detail}</p>
+                  </div>
+                ))}
+              </Node>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Blog + world (the boxed note) ──────────── */}
+        <section id="blog" className="scroll-mt-24 py-20">
+          <SectionHead kicker="Blog & world" title="Notes, and what’s happening" />
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-8">
+            <Node tag="Blog">
+              <Blog />
+            </Node>
+            <Node tag="What’s happening in the world">
+              <News />
+            </Node>
+          </div>
+        </section>
+
+        {/* ── Japanese words ────────────────────────── */}
+        <section id="japanese" className="scroll-mt-24 py-20">
+          <SectionHead kicker="今日の言葉 · Words of the day" title="10 Japanese words, every day" />
+          <JapaneseWords />
+        </section>
+
+        {/* ── Contact ───────────────────────────────── */}
+        <section id="contact" className="scroll-mt-24 pb-10 pt-20">
+          <motion.div {...rise} className="frame p-7 sm:p-12">
+            <span className="frame-tag">Frame · Contact</span>
+            <div className="grid gap-10 lg:grid-cols-[1fr_1.3fr]">
+              <div>
+                <p className="label mb-4">In last —</p>
+                <h2 className="text-4xl font-extrabold leading-[0.95] tracking-tight sm:text-6xl">
+                  Contact <span className="festive glow text-gold">me</span>
+                </h2>
+                <p className="mt-5 max-w-md text-lg text-snow/80">Questions, projects, editing work, or just “konnichiwa” — send a message and it lands privately in my inbox.</p>
+                <a href={githubUrl} target="_blank" rel="noreferrer" className="mt-6 inline-block text-gold underline underline-offset-4">
+                  github.com/{profile.github} ↗
+                </a>
               </div>
-            ))}
-          </motion.div>
-        </Section>
-
-        <Section id="photos" index="04" title="Life in Japan">
-          <motion.div {...rise} className="grid grid-cols-2 gap-4 sm:gap-5">
-            {[
-              { src: fireworks1, alt: 'Fireworks bursting over a lake above a summer festival crowd' },
-              { src: fireworks2, alt: 'Fireworks lighting up the night sky over the water' },
-            ].map((ph) => (
-              <figure key={ph.src} className="overflow-hidden rounded-2xl border border-line">
-                <img src={ph.src} alt={ph.alt} width={1050} height={1400} loading="lazy" className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-105" />
-              </figure>
-            ))}
-          </motion.div>
-          <p className="label mt-4">Summer fireworks festival — Japan</p>
-        </Section>
-
-        <section id="contact" className="scroll-mt-20 px-5 pb-10 pt-24 sm:px-10 sm:pt-32">
-          <motion.div {...rise} className="rounded-3xl border border-line bg-panel/70 p-7 backdrop-blur-md sm:p-14">
-            <p className="label mb-4">05 — Contact</p>
-            <h2 className="text-4xl font-extrabold leading-[0.95] tracking-tight sm:text-7xl">
-              Let’s work <span className="spooky glow text-crimson">together</span>.
-            </h2>
-            <p className="mt-5 max-w-xl text-lg text-snow/80">Open to internships, part-time work and editing or web projects. The fastest way to reach me is on GitHub.</p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <a href={githubUrl} target="_blank" rel="noreferrer" className="rounded-full bg-crimson px-6 py-3.5 font-semibold text-ink shadow-[0_0_30px_rgb(255_117_24/0.45)] transition-transform hover:-translate-y-0.5">
-                Message me on GitHub ↗
-              </a>
+              <Contact />
             </div>
           </motion.div>
-          <footer className="label mt-16 flex flex-wrap justify-between gap-3 border-t border-snow/15 pt-5">
+          <div className="candy mt-16" />
+          <footer className="label flex flex-wrap justify-between gap-3 pt-5">
             <span>
               © {new Date().getFullYear()} {profile.name}
             </span>
-            <span>{profile.location}</span>
+            <span>Lumbini → {profile.location}</span>
             <a href="#top" className="hover:text-snow">
               Back to top ↑
             </a>
@@ -187,36 +241,51 @@ export default function App() {
   )
 }
 
-function Section({ id, index, title, children }: { id: string; index: string; title: string; children: ReactNode }) {
+// The connector lines from the title node down to the three branches.
+function Branches() {
   return (
-    <section id={id} className="scroll-mt-20 px-5 py-20 sm:px-10 sm:py-28">
-      <div className="grid gap-8 lg:grid-cols-[16rem_1fr]">
-        <motion.div {...rise}>
-          <p className="label mb-2">{index}</p>
-          <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
-        </motion.div>
-        <div>{children}</div>
-      </div>
-    </section>
+    <svg viewBox="0 0 1200 90" preserveAspectRatio="none" className="hidden h-20 w-full lg:block" fill="none" aria-hidden>
+      <path d="M600 0 V40 M200 40 H1000 M200 40 V90 M600 40 V90 M1000 40 V90" stroke="#4c9dff" strokeWidth="1.5" vectorEffect="non-scaling-stroke" strokeDasharray="6 6" />
+      {[200, 600, 1000].map((x) => (
+        <circle key={x} cx={x} cy="88" r="4" fill="#4c9dff" />
+      ))}
+    </svg>
   )
 }
 
-function Timeline({ heading, entries }: { heading: string; entries: Entry[] }) {
+function BranchTitle({ kicker, title }: { kicker: string; title: string }) {
   return (
-    <motion.div {...rise} className="rounded-2xl border border-line bg-panel/70 p-6 backdrop-blur-md sm:p-8">
-      <p className="label mb-6">{heading}</p>
-      <ul className="space-y-8">
-        {entries.map((e) => (
-          <li key={e.title + e.place} className="border-l-2 border-crimson pl-5">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-              <h3 className="text-xl font-semibold">{e.title}</h3>
-              {e.period && <span className="label">{e.period}</span>}
-            </div>
-            <p className="mt-1 text-azure">{e.place}</p>
-            <p className="mt-3 leading-relaxed text-snow/75">{e.detail}</p>
-          </li>
-        ))}
-      </ul>
+    <motion.div {...rise} className="text-center">
+      <p className="festive text-4xl text-berry">{kicker}</p>
+      <h2 className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-mist">{title}</h2>
     </motion.div>
+  )
+}
+
+function SectionHead({ kicker, title }: { kicker: string; title: string }) {
+  return (
+    <motion.div {...rise} className="mb-12">
+      <p className="label mb-2">{kicker}</p>
+      <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{title}</h2>
+    </motion.div>
+  )
+}
+
+function Node({ tag, children }: { tag: string; children: ReactNode }) {
+  return (
+    <motion.div {...rise} className="frame p-6 sm:p-7">
+      <span className="frame-tag">{tag}</span>
+      {children}
+    </motion.div>
+  )
+}
+
+function Arrow() {
+  return (
+    <div className="-my-8 flex justify-center" aria-hidden>
+      <svg width="16" height="36" viewBox="0 0 16 36" fill="none">
+        <path d="M8 0 V32 M2 26 L8 33 L14 26" stroke="#f2c14e" strokeWidth="1.5" />
+      </svg>
+    </div>
   )
 }
