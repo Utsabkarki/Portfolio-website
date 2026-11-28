@@ -100,10 +100,10 @@ export default function JapaneseWords() {
             aria-pressed={quiz}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${quiz ? 'bg-gold text-ink' : 'border border-line text-snow hover:border-gold'}`}
           >
-            {quiz ? 'Quiz mode: on' : 'Quiz mode'}
+            {quiz ? 'Show answers' : 'Quiz me'}
           </button>
           <button onClick={shuffle} className="rounded-full border border-line px-4 py-2 text-sm font-semibold hover:border-gold">
-            🎲 Random 10
+            Shuffle
           </button>
           {(random || day !== today) && (
             <button onClick={() => go(today)} className="rounded-full bg-berry px-4 py-2 text-sm font-semibold">
@@ -155,14 +155,14 @@ export default function JapaneseWords() {
                   className="absolute bottom-2 right-2 z-10 rounded-full px-2 py-1 text-xs text-mist hover:text-gold"
                   aria-label={`Hear ${written} pronounced`}
                 >
-                  🔊
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14" /></svg>
                 </button>
               )}
             </li>
           )
         })}
       </ol>
-      <p className="label mt-5">A new set of 10 every day at midnight Japan time · {words.length} words in the deck</p>
+      <p className="label mt-5">New words every day at midnight, Japan time. {words.length} words in total.</p>
     </div>
   )
 }

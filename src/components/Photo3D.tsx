@@ -78,7 +78,6 @@ export default function Photo3D({ photos }: { photos: Photo[] }) {
         </div>
       </div>
       <div className="mx-auto mt-6 h-4 w-2/3 rounded-[50%] bg-black/50 blur-md" aria-hidden />
-      <p className="label mt-2 text-center">Drag to spin ↔</p>
     </div>
   )
 }

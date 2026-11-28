@@ -65,14 +65,9 @@ export default function App() {
       <div className="canvas-grid" aria-hidden />
 
       <header className="fixed inset-x-0 top-0 z-30">
-        <div className="lights px-2" aria-hidden>
-          {Array.from({ length: 28 }, (_, i) => (
-            <span key={i} />
-          ))}
-        </div>
         <div className="flex items-center justify-between px-5 py-3 sm:px-10">
           <a href="#top" className="text-sm font-semibold tracking-tight">
-            Utsab Karki <span aria-hidden>🎄</span>
+            Utsab Karki
           </a>
           <nav className="flex items-center gap-1 rounded-full border border-line bg-ink/70 p-1 text-sm backdrop-blur-md">
             {[
@@ -95,21 +90,17 @@ export default function App() {
         {/* ── Title node ─────────────────────────────── */}
         <section className="flex min-h-[88svh] flex-col items-center justify-center pb-10 pt-32 text-center">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.2, 0.7, 0.2, 1] }}>
-            <p className="label mx-auto mb-10 flex w-fit items-center gap-2 rounded-full border border-line bg-panel/70 px-4 py-2 backdrop-blur-md">
-              <span className="inline-block size-2 rounded-full bg-pine shadow-[0_0_10px_var(--color-pine)]" />
-              {xmas === 0 ? 'Merry Christmas! 🎅' : `${xmas} day${xmas === 1 ? '' : 's'} until Christmas`}
+            <p className="mb-8 text-sm text-mist">
+              {xmas === 0 ? 'Merry Christmas' : `${xmas} day${xmas === 1 ? '' : 's'} to Christmas`} · {profile.location}
             </p>
-            <div className="frame mx-auto inline-block px-6 py-4 sm:px-10 sm:py-6">
-              <span className="frame-tag">Frame · My Portfolio</span>
-              <h1 className="text-[clamp(3rem,11vw,8.5rem)] font-extrabold leading-[0.9] tracking-[-0.04em]">
-                My <span className="festive glow text-gold">Portfolio</span>
-              </h1>
-            </div>
-            <p className="mx-auto mt-8 max-w-xl text-lg leading-snug text-snow/85 sm:text-xl">
-              <strong className="text-snow">{profile.name}</strong> — {profile.tagline}
+            <h1 className="serif text-[clamp(3.5rem,12vw,9.5rem)] leading-[0.9]">
+              My <em className="text-berry">portfolio</em>
+            </h1>
+            <p className="mx-auto mt-8 max-w-md text-lg leading-snug text-snow/80">
+              I’m {profile.name}. {profile.tagline}
             </p>
-            <a href="#story" className="mt-8 inline-flex items-center gap-2 rounded-full bg-berry px-6 py-3 font-semibold shadow-[0_0_30px_rgb(229_56_59/0.45)] transition-transform hover:-translate-y-0.5">
-              Read my story ↓
+            <a href="#story" className="mt-10 inline-block border-b border-snow/40 pb-1 text-sm font-semibold transition-colors hover:border-snow">
+              Start with my story ↓
             </a>
           </motion.div>
         </section>
@@ -120,7 +111,7 @@ export default function App() {
           <div className="mt-4 grid gap-12 lg:grid-cols-3 lg:gap-8">
             {/* PAST */}
             <div className="space-y-12">
-              <BranchTitle kicker="Past" title="Introduction" />
+              <BranchTitle kicker="Past" title="Nepal" />
               <Node tag="Utsab Karki">
                 <p className="text-xl font-semibold leading-snug">{past.intro}</p>
               </Node>
@@ -144,7 +135,7 @@ export default function App() {
 
             {/* PHOTO */}
             <div className="lg:sticky lg:top-28 lg:self-start">
-              <BranchTitle kicker="Photo" title="In 3D" />
+              <BranchTitle kicker="Photo" title="Drag to turn it" />
               <motion.div {...rise} className="mt-12">
                 <Photo3D photos={photos} />
               </motion.div>
@@ -152,7 +143,7 @@ export default function App() {
 
             {/* NOW */}
             <div className="space-y-12">
-              <BranchTitle kicker="Now" title="Life in Japan" />
+              <BranchTitle kicker="Now" title="Japan" />
               {now.timeline.map((t, i) => (
                 <div key={t.title} className="space-y-12">
                   {i > 0 && <Arrow />}
@@ -179,7 +170,7 @@ export default function App() {
                 <p className="label mb-2">Working experience</p>
                 {now.work.map((w) => (
                   <div key={w.title}>
-                    <h3 className="text-xl font-bold">{w.title} ✂️</h3>
+                    <h3 className="text-xl font-bold">{w.title}</h3>
                     <p className="mt-1.5 text-snow/75">{w.detail}</p>
                   </div>
                 ))}
@@ -190,7 +181,7 @@ export default function App() {
 
         {/* ── Blog + world (the boxed note) ──────────── */}
         <section id="blog" className="scroll-mt-24 py-20">
-          <SectionHead kicker="Blog & world" title="Notes, and what’s happening" />
+          <SectionHead kicker="Writing" title="Blog, and the news I’m reading" />
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-8">
             <Node tag="Blog">
               <Blog />
@@ -203,7 +194,7 @@ export default function App() {
 
         {/* ── Japanese words ────────────────────────── */}
         <section id="japanese" className="scroll-mt-24 py-20">
-          <SectionHead kicker="今日の言葉 · Words of the day" title="10 Japanese words, every day" />
+          <SectionHead kicker="今日の言葉" title="Ten Japanese words a day" />
           <JapaneseWords />
         </section>
 
@@ -213,11 +204,10 @@ export default function App() {
             <span className="frame-tag">Frame · Contact</span>
             <div className="grid gap-10 lg:grid-cols-[1fr_1.3fr]">
               <div>
-                <p className="label mb-4">In last —</p>
-                <h2 className="text-4xl font-extrabold leading-[0.95] tracking-tight sm:text-6xl">
-                  Contact <span className="festive glow text-gold">me</span>
+                <h2 className="serif text-5xl leading-none sm:text-7xl">
+                  Say <em className="text-berry">hello</em>
                 </h2>
-                <p className="mt-5 max-w-md text-lg text-snow/80">Questions, projects, editing work, or just “konnichiwa” — send a message and it lands privately in my inbox.</p>
+                <p className="mt-5 max-w-md text-lg text-snow/80">Work, editing jobs, or a question about studying in Japan. Messages come straight to my inbox.</p>
                 <a href={githubUrl} target="_blank" rel="noreferrer" className="mt-6 inline-block text-gold underline underline-offset-4">
                   github.com/{profile.github} ↗
                 </a>
@@ -225,8 +215,7 @@ export default function App() {
               <Contact />
             </div>
           </motion.div>
-          <div className="candy mt-16" />
-          <footer className="label flex flex-wrap justify-between gap-3 pt-5">
+          <footer className="mt-16 flex flex-wrap justify-between gap-3 border-t border-line pt-5 text-sm text-mist">
             <span>
               © {new Date().getFullYear()} {profile.name}
             </span>
@@ -245,9 +234,9 @@ export default function App() {
 function Branches() {
   return (
     <svg viewBox="0 0 1200 90" preserveAspectRatio="none" className="hidden h-20 w-full lg:block" fill="none" aria-hidden>
-      <path d="M600 0 V40 M200 40 H1000 M200 40 V90 M600 40 V90 M1000 40 V90" stroke="#4c9dff" strokeWidth="1.5" vectorEffect="non-scaling-stroke" strokeDasharray="6 6" />
+      <path d="M600 0 V40 M200 40 H1000 M200 40 V90 M600 40 V90 M1000 40 V90" stroke="#21382f" strokeWidth="1" vectorEffect="non-scaling-stroke" />
       {[200, 600, 1000].map((x) => (
-        <circle key={x} cx={x} cy="88" r="4" fill="#4c9dff" />
+        <circle key={x} cx={x} cy="88" r="3" fill="#9fb3aa" />
       ))}
     </svg>
   )
@@ -256,8 +245,8 @@ function Branches() {
 function BranchTitle({ kicker, title }: { kicker: string; title: string }) {
   return (
     <motion.div {...rise} className="text-center">
-      <p className="festive text-4xl text-berry">{kicker}</p>
-      <h2 className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-mist">{title}</h2>
+      <h2 className="serif text-5xl">{kicker}</h2>
+      <p className="mt-1 text-sm text-mist">{title}</p>
     </motion.div>
   )
 }
@@ -265,8 +254,8 @@ function BranchTitle({ kicker, title }: { kicker: string; title: string }) {
 function SectionHead({ kicker, title }: { kicker: string; title: string }) {
   return (
     <motion.div {...rise} className="mb-12">
-      <p className="label mb-2">{kicker}</p>
-      <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl">{title}</h2>
+      <p className="jp mb-2 text-sm text-berry">{kicker}</p>
+      <h2 className="serif text-4xl sm:text-6xl">{title}</h2>
     </motion.div>
   )
 }
@@ -284,7 +273,7 @@ function Arrow() {
   return (
     <div className="-my-8 flex justify-center" aria-hidden>
       <svg width="16" height="36" viewBox="0 0 16 36" fill="none">
-        <path d="M8 0 V32 M2 26 L8 33 L14 26" stroke="#f2c14e" strokeWidth="1.5" />
+        <path d="M8 0 V32 M3 27 L8 33 L13 27" stroke="#21382f" strokeWidth="1.5" />
       </svg>
     </div>
   )

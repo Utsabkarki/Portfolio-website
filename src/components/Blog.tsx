@@ -74,8 +74,8 @@ export default function Blog() {
                 ✕
               </button>
             </div>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{open.title}</h2>
-            <div className="candy my-6 w-24" />
+            <h2 className="serif mt-3 text-4xl sm:text-5xl">{open.title}</h2>
+            <div className="my-6 h-px w-16 bg-berry" />
             <div className="prose-post" dangerouslySetInnerHTML={{ __html: html }} />
           </article>
         )}

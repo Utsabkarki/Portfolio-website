@@ -13,7 +13,7 @@
   --color-figma: #4c9dff;
   --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
-  --font-festive: 'Mountains of Christmas', 'Bricolage Grotesque Variable', cursive;
+  --font-serif: 'Instrument Serif', Georgia, serif;
   --font-jp: 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', 'Noto Sans CJK JP', sans-serif;
 }
 
@@ -45,18 +45,14 @@ body {
   outline-offset: 3px;
 }
 
-.festive {
-  font-family: var(--font-festive);
-  font-weight: 700;
-  letter-spacing: 0.01em;
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .jp {
   font-family: var(--font-jp);
-}
-
-.glow {
-  text-shadow: 0 0 24px rgb(242 193 78 / 0.45), 0 0 64px rgb(229 56 59 / 0.25);
 }
 
 .label {
@@ -93,7 +89,7 @@ body {
   position: relative;
   border: 1px solid var(--color-line);
   border-radius: 1.25rem;
-  background: color-mix(in oklab, var(--color-panel) 78%, transparent);
+  background: color-mix(in oklab, var(--color-panel) 86%, transparent);
   backdrop-filter: blur(12px);
   transition: border-color 0.25s, box-shadow 0.25s;
 }
@@ -109,9 +105,11 @@ body {
   font-size: 0.68rem;
   color: var(--color-mist);
   white-space: nowrap;
-  transition: color 0.25s;
+  opacity: 0;
+  transition: opacity 0.25s;
 }
 .frame:hover .frame-tag {
+  opacity: 1;
   color: var(--color-figma);
 }
 .frame::before,
@@ -136,34 +134,6 @@ body {
 .frame:hover::before,
 .frame:hover::after {
   opacity: 1;
-}
-
-/* Candy-cane rule */
-.candy {
-  height: 6px;
-  border-radius: 99px;
-  background: repeating-linear-gradient(-45deg, var(--color-berry) 0 8px, var(--color-snow) 8px 16px);
-  opacity: 0.85;
-}
-
-/* Twinkling string lights */
-.lights {
-  display: flex;
-  justify-content: space-between;
-  gap: 0;
-}
-.lights span {
-  width: 8px;
-  height: 12px;
-  border-radius: 50% 50% 45% 45%;
-  animation: twinkle 2.4s ease-in-out infinite;
-}
-.lights span:nth-child(4n + 1) { background: var(--color-berry); box-shadow: 0 0 10px var(--color-berry); }
-.lights span:nth-child(4n + 2) { background: var(--color-gold); box-shadow: 0 0 10px var(--color-gold); animation-delay: 0.6s; }
-.lights span:nth-child(4n + 3) { background: var(--color-pine); box-shadow: 0 0 10px var(--color-pine); animation-delay: 1.2s; }
-.lights span:nth-child(4n + 4) { background: var(--color-figma); box-shadow: 0 0 10px var(--color-figma); animation-delay: 1.8s; }
-@keyframes twinkle {
-  50% { opacity: 0.25; box-shadow: none; }
 }
 
 /* 3D photo carousel */
@@ -251,6 +221,6 @@ dialog::backdrop {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .lights span, .pulse, .draw { animation: none; stroke-dashoffset: 0; }
+  .pulse, .draw { animation: none; stroke-dashoffset: 0; }
   .flip-inner { transition: none; }
 }

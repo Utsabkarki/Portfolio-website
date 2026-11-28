@@ -14,4 +14,4 @@ Welcome to my new website! I’m Utsab — originally from **Lumbini, Nepal**, a
 - **What’s happening in the world** — headlines that refresh themselves automatically.
 - **10 Japanese words a day** — a new set every day. I’m learning too, so let’s practise together.
 
-Merry Christmas, and thanks for stopping by! 🎄
+Thanks for stopping by, and Merry Christmas.

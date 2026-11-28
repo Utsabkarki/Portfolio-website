@@ -59,15 +59,15 @@ export default function Contact() {
         <button
           type="submit"
           disabled={!ready || status === 'sending'}
-          className="rounded-full bg-berry px-6 py-3.5 font-semibold text-snow shadow-[0_0_30px_rgb(229_56_59/0.4)] transition-transform enabled:hover:-translate-y-0.5 disabled:opacity-50"
+          className="rounded-full bg-snow px-7 py-3 font-semibold text-ink transition-colors enabled:hover:bg-berry enabled:hover:text-snow disabled:opacity-40"
         >
-          {status === 'sending' ? 'Sending…' : 'Send message 🎁'}
+          {status === 'sending' ? 'Sending…' : 'Send'}
         </button>
         <p className="text-sm text-mist" role="status">
-          {!ready && 'The contact form opens soon — meanwhile you can reach me on GitHub.'}
-          {status === 'sent' && <span className="text-pine">Thanks! Your message is on its way. ✓</span>}
+          {!ready && 'The form isn’t switched on yet. Until then, find me on GitHub.'}
+          {status === 'sent' && <span className="text-pine">Sent. I’ll get back to you soon.</span>}
           {status === 'error' && <span className="text-berry">Something went wrong. Please try again.</span>}
-          {ready && status === 'idle' && 'Your message goes privately to my inbox.'}
+          {ready && status === 'idle' && ''}
         </p>
       </div>
     </form>

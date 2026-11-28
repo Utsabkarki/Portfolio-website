@@ -48,8 +48,7 @@ export default function News() {
         </div>
         {feed?.updatedAt && (
           <span className="label flex items-center gap-2">
-            <span className="inline-block size-2 animate-pulse rounded-full bg-pine shadow-[0_0_8px_var(--color-pine)]" />
-            Auto-updated {ago(feed.updatedAt)}
+            Updated {ago(feed.updatedAt)}
           </span>
         )}
       </div>
@@ -62,7 +61,7 @@ export default function News() {
         </ul>
       )}
       {(failed || (feed && feed.items.length === 0)) && (
-        <p className="rounded-xl border border-dashed border-line p-5 text-mist">Fresh headlines are on their way — this section refreshes itself every few hours.</p>
+        <p className="rounded-xl border border-dashed border-line p-5 text-mist">No headlines right now. This list refreshes every three hours.</p>
       )}
 
       <ul className="divide-y divide-line">

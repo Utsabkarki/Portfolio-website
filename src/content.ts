@@ -6,7 +6,7 @@ export const profile = {
   location: 'Kyoto, Japan',
   github: 'Utsabkarki',
   domain: 'utsabkarki.com.np',
-  tagline: 'From Lumbini, Nepal to Kyoto, Japan — studying, building for the web and editing.',
+  tagline: 'I grew up in Lumbini, Nepal, and since October 2024 I’ve been studying in Kyoto. I write code and edit video.',
 }
 
 // The "Past" branch of the sketch.

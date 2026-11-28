@@ -85,8 +85,8 @@ function Terrain({ still }: { still: boolean }) {
           uTime: { value: 0 },
           uWire: { value: isWire ? 1 : 0 },
           uBg: { value: new THREE.Color('#07110e') },
-          uLow: { value: new THREE.Color('#2e8f5e') },
-          uHigh: { value: new THREE.Color('#dfeee6') },
+          uLow: { value: new THREE.Color('#1c5a3d') },
+          uHigh: { value: new THREE.Color('#9fb8ab') },
         },
       })
     return [make(false), make(true)]

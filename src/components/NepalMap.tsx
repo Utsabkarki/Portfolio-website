@@ -29,9 +29,9 @@ export default function NepalMap() {
       <circle cx={x} cy={y} r="9" fill="#e5383b" className="pulse" />
       <circle cx={x} cy={y} r="7" fill="#e5383b" stroke="#f7f3ea" strokeWidth="2.5" />
       <line x1={x} y1={y - 9} x2={x - 60} y2={y - 95} stroke="#f2c14e" strokeWidth="1.5" />
-      <rect x={x - 150} y={y - 128} width="148" height="36" rx="8" fill="#f2c14e" />
+      <rect x={x - 130} y={y - 128} width="108" height="36" rx="8" fill="#f2c14e" />
       <text x={x - 76} y={y - 104} textAnchor="middle" fill="#07110e" fontSize="18" fontWeight="700" fontFamily="Bricolage Grotesque Variable, sans-serif">
-        Lumbini 🇳🇵
+        Lumbini
       </text>
     </svg>
   )
