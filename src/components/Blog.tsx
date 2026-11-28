@@ -9,10 +9,10 @@ export default function Blog() {
   const [open, setOpen] = useState<Post | null>(null)
   const dialog = useRef<HTMLDialogElement>(null!)
 
-  // Deep links: #blog/<slug> opens a post directly.
+  // Deep links: /blog/#<slug> opens a post directly.
   useEffect(() => {
     const sync = () => {
-      const slug = location.hash.match(/^#blog\/(.+)$/)?.[1]
+      const slug = location.hash.slice(1)
       setOpen(slug ? (posts.find((p) => p.slug === decodeURIComponent(slug)) ?? null) : null)
     }
     sync()
@@ -29,7 +29,7 @@ export default function Blog() {
   const html = useMemo(() => (open ? (marked.parse(open.body, { async: false }) as string) : ''), [open])
 
   const close = () => {
-    if (location.hash.startsWith('#blog/')) history.replaceState(null, '', '#blog')
+    if (location.hash) history.replaceState(null, '', location.pathname)
     setOpen(null)
   }
 
@@ -40,7 +40,7 @@ export default function Blog() {
         {posts.map((p, i) => (
           <li key={p.slug}>
             <a
-              href={`#blog/${p.slug}`}
+              href={`#${p.slug}`}
               className={`group block rounded-2xl border border-line bg-panel-2/60 p-5 transition-colors hover:border-gold ${i === 0 ? 'sm:p-6' : ''}`}
             >
               <div className="label flex flex-wrap items-center gap-x-3 gap-y-1">

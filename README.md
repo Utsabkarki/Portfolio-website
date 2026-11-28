@@ -2,6 +2,12 @@
 
 Personal site of Utsab Karki — a Christmas-themed portfolio with a 3D snowy backdrop, built with React 19, Three.js (React Three Fiber), TypeScript, Vite 8 and Tailwind 4.
 
+## Pages
+
+- `/` — home: the story, previews of the blog and today's words, contact.
+- `/blog/` — blog posts and world news. A post opens at `/blog/#<file-name>`.
+- `/nihongo/` — ten Japanese words a day.
+
 ## Sections
 
 - **Past** — introduction, a map of Nepal pinned at Lumbini, education.
