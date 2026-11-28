@@ -28,7 +28,10 @@ export default function News() {
   }, [])
 
   const topics = ['All', ...new Set(feed?.items.map((i) => i.topic) ?? [])]
-  const shown = (feed?.items ?? []).filter((i) => topic === 'All' || i.topic === topic).slice(0, 8)
+  const shown = (feed?.items ?? [])
+    .filter((i) => /^https:\/\//.test(i.link)) // never render non-https links
+    .filter((i) => topic === 'All' || i.topic === topic)
+    .slice(0, 8)
 
   return (
     <div>

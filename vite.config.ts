@@ -6,6 +6,8 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
+    // Keep every asset as a real file (no data: URLs) so the strict CSP holds.
+    assetsInlineLimit: 0,
     rolldownOptions: {
       // One HTML file per page so GitHub Pages serves /blog/ and /nihongo/ directly.
       input: {

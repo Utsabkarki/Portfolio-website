@@ -1,4 +1,17 @@
 import { marked } from 'marked'
+
+// Posts render Markdown only: raw HTML is dropped and links must be http(s), mailto or on-site.
+marked.use({
+  renderer: {
+    html: () => '',
+    link({ href, text }) {
+      const safe = /^(https?:|mailto:|\/|#)/i.test(href) ? href.replace(/"/g, '%22') : '#'
+      const ext = /^https?:/i.test(safe)
+      return `<a href="${safe}"${ext ? ' target="_blank" rel="noopener noreferrer"' : ''}>${text}</a>`
+    },
+    image: () => '',
+  },
+})
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { posts, type Post } from '../blog'
 

@@ -54,7 +54,8 @@ async function grab(feed) {
   })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return parseFeed(await res.text())
-    .filter((i) => i.title && /^https?:\/\//.test(i.link))
+    .filter((i) => i.title && /^https:\/\/[^\s"<>]+$/.test(i.link))
+    .map((i) => ({ ...i, title: i.title.slice(0, 220) }))
     .slice(0, PER_FEED)
     .map((i) => ({ ...i, topic: feed.topic, source: feed.source }))
 }
