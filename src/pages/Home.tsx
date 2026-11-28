@@ -186,9 +186,9 @@ export default function Home() {
 function Branches() {
   return (
     <svg viewBox="0 0 1200 90" preserveAspectRatio="none" className="hidden h-20 w-full lg:block" fill="none" aria-hidden>
-      <path d="M600 0 V40 M200 40 H1000 M200 40 V90 M600 40 V90 M1000 40 V90" stroke="#21382f" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+      <path d="M600 0 V40 M200 40 H1000 M200 40 V90 M600 40 V90 M1000 40 V90" stroke="#1e2944" strokeWidth="1" vectorEffect="non-scaling-stroke" />
       {[200, 600, 1000].map((x) => (
-      <circle key={x} cx={x} cy="88" r="3" fill="#9fb3aa" />
+      <circle key={x} cx={x} cy="88" r="3" fill="#8f9cc2" />
       ))}
     </svg>
   )
@@ -207,7 +207,7 @@ function Arrow() {
   return (
     <div className="-my-8 flex justify-center" aria-hidden>
       <svg width="16" height="36" viewBox="0 0 16 36" fill="none">
-      <path d="M8 0 V32 M3 27 L8 33 L13 27" stroke="#21382f" strokeWidth="1.5" />
+      <path d="M8 0 V32 M3 27 L8 33 L13 27" stroke="#1e2944" strokeWidth="1.5" />
       </svg>
     </div>
   )

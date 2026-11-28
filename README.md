@@ -1,6 +1,6 @@
 # utsabkarki.com.np
 
-Personal site of Utsab Karki — a Christmas-themed portfolio with a 3D snowy backdrop, built with React 19, Three.js (React Three Fiber), TypeScript, Vite 8 and Tailwind 4.
+Personal site of Utsab Karki — a portfolio with a moving, manga-style red and cyan backdrop, built with React 19, Three.js (React Three Fiber), TypeScript, Vite 8 and Tailwind 4.
 
 ## Pages
 

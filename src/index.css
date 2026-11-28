@@ -1,15 +1,15 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ink: #07110e;
-  --color-panel: #0e1c18;
-  --color-panel-2: #132620;
-  --color-line: #21382f;
-  --color-snow: #f7f3ea;
-  --color-mist: #9fb3aa;
-  --color-berry: #e5383b;
-  --color-gold: #f2c14e;
-  --color-pine: #3fa36b;
+  --color-ink: #04060c;
+  --color-panel: #0a0f1e;
+  --color-panel-2: #10182e;
+  --color-line: #1e2944;
+  --color-snow: #eef2ff;
+  --color-mist: #8f9cc2;
+  --color-berry: #ff2e4a;
+  --color-gold: #5cd3ff;
+  --color-pine: #7ee0ff;
   --color-figma: #4c9dff;
   --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
@@ -70,7 +70,7 @@ body {
   z-index: 0;
   pointer-events: none;
   opacity: calc(var(--scene-fade) * 0.9);
-  background: radial-gradient(120% 80% at 70% 10%, #123129 0%, #0a1a16 42%, var(--color-ink) 72%);
+  background: radial-gradient(120% 80% at 70% 10%, #0b1430 0%, #070b18 42%, var(--color-ink) 72%);
 }
 
 /* Figma-style canvas dot grid */
@@ -79,7 +79,7 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background-image: radial-gradient(rgb(247 243 234 / 0.07) 1px, transparent 1px);
+  background-image: radial-gradient(rgb(238 242 255 / 0.07) 1px, transparent 1px);
   background-size: 24px 24px;
   mask-image: linear-gradient(to bottom, transparent, black 30%, black);
 }
@@ -157,7 +157,7 @@ body {
   backface-visibility: hidden;
   border-radius: 1rem;
   overflow: hidden;
-  border: 1px solid rgb(247 243 234 / 0.18);
+  border: 1px solid rgb(238 242 255 / 0.18);
   box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.7);
 }
 
@@ -205,8 +205,8 @@ body {
 /* Blog article typography */
 .prose-post h2 { font-size: 1.4rem; font-weight: 700; margin: 2rem 0 0.75rem; }
 .prose-post h3 { font-size: 1.15rem; font-weight: 700; margin: 1.5rem 0 0.5rem; }
-.prose-post p { margin: 0 0 1rem; line-height: 1.75; color: rgb(247 243 234 / 0.85); }
-.prose-post ul, .prose-post ol { margin: 0 0 1rem 1.25rem; line-height: 1.75; color: rgb(247 243 234 / 0.85); }
+.prose-post p { margin: 0 0 1rem; line-height: 1.75; color: rgb(238 242 255 / 0.85); }
+.prose-post ul, .prose-post ol { margin: 0 0 1rem 1.25rem; line-height: 1.75; color: rgb(238 242 255 / 0.85); }
 .prose-post ul { list-style: disc; }
 .prose-post ol { list-style: decimal; }
 .prose-post a { color: var(--color-gold); text-decoration: underline; text-underline-offset: 3px; }
