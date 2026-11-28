@@ -9,6 +9,8 @@ export function bindInput() {
   const onMove = (e: PointerEvent) => {
     input.px = (e.clientX / window.innerWidth) * 2 - 1
     input.py = (e.clientY / window.innerHeight) * 2 - 1
+    document.documentElement.style.setProperty('--px', input.px.toFixed(3))
+    document.documentElement.style.setProperty('--py', input.py.toFixed(3))
   }
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })

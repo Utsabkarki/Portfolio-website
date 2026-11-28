@@ -225,7 +225,7 @@ dialog::backdrop {
   .flip-inner { transition: none; }
 }
 
-/* Backdrop characters: visible on the first screen, fading out as you scroll */
+/* Backdrop key art: visible on the first screen, fading out as you scroll */
 .characters {
   position: fixed;
   inset: 0;
@@ -234,44 +234,95 @@ dialog::backdrop {
   overflow: hidden;
   opacity: clamp(0, calc((var(--scene-fade) - 0.28) * 1.45), 1);
 }
-.oni {
+/* Covers the viewport like object-fit: cover, keeping the figure in view on phones */
+.art-frame {
   position: absolute;
-  left: 50%;
-  top: -27vh;
-  width: min(118vw, 920px);
-  translate: -50% 0;
-  opacity: 0.36;
-  animation: breathe 7s ease-in-out infinite;
-  mask-image: linear-gradient(to bottom, black 55%, transparent 95%);
+  width: max(100vw, 150svh);
+  aspect-ratio: 3 / 2;
+  left: calc((100vw - max(100vw, 150svh)) * 0.82);
+  top: calc((100svh - max(100svh, 66.667vw)) * 0.25);
 }
-.hero-figure {
+.art-move {
   position: absolute;
-  right: 4vw;
-  bottom: -2vh;
-  height: 80vh;
-  max-width: 44vw;
-  mask-image: linear-gradient(to bottom, black 72%, transparent 98%);
-  filter: drop-shadow(0 0 30px rgb(255 46 74 / 0.25)) drop-shadow(0 0 60px rgb(92 211 255 / 0.15));
+  inset: 0;
+  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0) scale(1.06);
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation: drift 24s ease-in-out infinite alternate;
+}
+.art-move img {
+  display: block;
+  object-fit: cover;
+}
+.art-eye {
+  position: absolute;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 90 110 / 0.95) 0%, rgb(255 30 60 / 0.45) 30%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: eye-pulse 3.4s ease-in-out infinite;
+}
+.art-flicker {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+}
+.art-flicker-red {
+  background: radial-gradient(45% 55% at 12% 75%, rgb(255 30 60 / 0.35), transparent 70%);
+  animation: flicker 4.6s ease-in-out infinite;
+}
+.art-flicker-blue {
+  background: radial-gradient(35% 50% at 96% 55%, rgb(60 150 255 / 0.35), transparent 70%);
+  animation: flicker 5.8s ease-in-out infinite reverse;
+}
+/* Darkens behind the centred text and blends the bottom into the page */
+.art-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(42% 38% at 50% 50%, rgb(4 6 12 / 0.6), transparent 75%),
+    linear-gradient(to bottom, transparent 70%, var(--color-ink));
 }
 @media (max-width: 767px) {
-  .oni { top: -12vh; opacity: 0.28; }
-  .hero-figure { right: 50%; translate: 50% 0; height: 58vh; max-width: none; opacity: 0.35; }
+  .art-scrim {
+    background: linear-gradient(to bottom, rgb(4 6 12 / 0.15), rgb(4 6 12 / 0.65) 40%, rgb(4 6 12 / 0.65) 70%, var(--color-ink));
+  }
 }
-.figure-bob { animation: bob 6s ease-in-out infinite; }
-.coat-left { transform-box: view-box; transform-origin: 160px 210px; animation: coat-l 3.2s ease-in-out infinite; }
-.coat-right { transform-box: view-box; transform-origin: 240px 210px; animation: coat-r 2.7s ease-in-out infinite; }
-.figure-eyes, .oni-eyes { animation: eyes 3.6s ease-in-out infinite; }
-.eye-trail { animation: trail 2.4s ease-in-out infinite; }
-.oni-hair { transform-box: view-box; transform-origin: 300px 180px; animation: hair 8s ease-in-out infinite; }
+.embers span {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 50%;
+  opacity: 0;
+  animation-name: rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 
-@keyframes breathe { 50% { transform: scale(1.03) translateY(8px); } }
-@keyframes bob { 50% { transform: translateY(-6px); } }
-@keyframes coat-l { 50% { transform: rotate(3deg) skewX(-4deg); } }
-@keyframes coat-r { 50% { transform: rotate(-4deg) skewX(5deg); } }
-@keyframes eyes { 0%, 100% { opacity: 1; } 45% { opacity: 0.55; } 50% { opacity: 1; } 53% { opacity: 0.7; } }
-@keyframes trail { 50% { opacity: 0.35; transform: translateX(-12px) scaleX(0.85); } }
-@keyframes hair { 50% { transform: skewX(2deg) translateX(6px); } }
+@keyframes drift {
+  from { scale: 1; }
+  to { scale: 1.045; translate: -1% -1%; }
+}
+@keyframes eye-pulse {
+  0%, 100% { opacity: 0.55; scale: 1; }
+  50% { opacity: 1; scale: 1.25; }
+  52% { opacity: 0.6; }
+  55% { opacity: 1; }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 0.5; }
+  30% { opacity: 1; }
+  33% { opacity: 0.7; }
+  60% { opacity: 0.9; }
+}
+@keyframes rise {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: 0.9; }
+  80% { opacity: 0.6; }
+  100% { transform: translate(var(--drift), -105vh); opacity: 0; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .oni, .figure-bob, .coat-left, .coat-right, .figure-eyes, .oni-eyes, .eye-trail, .oni-hair { animation: none; }
+  .art-move, .art-eye, .art-flicker, .embers span { animation: none; }
+  .embers { display: none; }
+  .art-move { transition: none; }
 }
